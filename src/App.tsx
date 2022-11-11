@@ -2,7 +2,7 @@ import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
   IonIcon,
-  IonLabel,
+  IonLabel, IonLoading,
   IonRouterOutlet,
   IonTabBar,
   IonTabButton,
@@ -33,44 +33,81 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import {useEffect, useState} from "react";
+import deviceData from "./components/DeviceManager.txs";
+import questions from "./db/questions";
+
 
 setupIonicReact();
 
-const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
-          <Route exact path="/tab1">
-            <Tab1 />
-          </Route>
-          <Route exact path="/tab2">
-            <Tab2 />
-          </Route>
-          <Route path="/tab3">
-            <Tab3 />
-          </Route>
-          <Route exact path="/">
-            <Redirect to="/tab1" />
-          </Route>
-        </IonRouterOutlet>
-        <IonTabBar slot="bottom" style={{display:"none"}}>
-          <IonTabButton tab="tab1" href="/tab1">
-            <IonIcon icon={triangle} />
-            <IonLabel>Tab 1</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="tab2" href="/tab2">
-            <IonIcon icon={ellipse} />
-            <IonLabel>Tab 2</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="tab3" href="/tab3">
-            <IonIcon icon={square} />
-            <IonLabel>Tab 3</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
-    </IonReactRouter>
-  </IonApp>
-);
+const App: React.FC = () => {
+  const [locale, setLocale] = useState('');
+  const [showLoading, setShowLoading] = useState(false);
+
+  useEffect(() => {
+    deviceData.getLanguageCode().then(code=>{
+      console.error('Code:', code);
+      if (code.value && Object.keys(questions).includes(code.value)) {
+        setLocale(code.value);
+      } else {
+        setLocale('en');
+      }
+    }).catch(()=>{
+      setLocale( 'en');
+    })
+    deviceData.getLanguageTag().then(code=>{
+      console.error('Tag:', code);
+    })
+  }, []);
+  const options = {
+    locale: locale
+  };
+  if (!locale) {
+    return (
+        <IonLoading
+            cssClass='my-custom-class'
+            isOpen={showLoading}
+            onDidDismiss={() => setShowLoading(false)}
+            duration={5000}
+        />
+    )
+  }
+  return (
+      <IonApp>
+        <IonReactRouter>
+          <IonTabs>
+            <IonRouterOutlet>
+              <Route exact path="/tab1">
+                <Tab1 {...options}/>
+              </Route>
+              <Route exact path="/tab2">
+                <Tab2/>
+              </Route>
+              <Route path="/tab3">
+                <Tab3/>
+              </Route>
+              <Route exact path="/">
+                <Redirect to="/tab1"/>
+              </Route>
+            </IonRouterOutlet>
+            <IonTabBar slot="bottom" style={{display: "none"}}>
+              <IonTabButton tab="tab1" href="/tab1">
+                <IonIcon icon={triangle}/>
+                <IonLabel>Tab 1</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="tab2" href="/tab2">
+                <IonIcon icon={ellipse}/>
+                <IonLabel>Tab 2</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="tab3" href="/tab3">
+                <IonIcon icon={square}/>
+                <IonLabel>Tab 3</IonLabel>
+              </IonTabButton>
+            </IonTabBar>
+          </IonTabs>
+        </IonReactRouter>
+      </IonApp>
+  );
+};
 
 export default App;

@@ -6,6 +6,7 @@
     "@capacitor/android": "4.4.0",
     "@capacitor/app": "4.1.0",
     "@capacitor/core": "4.4.0",
+    "@capacitor/device": "^4.0.1",
     "@capacitor/haptics": "4.0.1",
     "@capacitor/ios": "4.4.0",
     "@capacitor/keyboard": "4.0.1",
@@ -49,7 +50,10 @@
     "eject": "react-scripts eject",
     "Start_Server": "ionic serve",
     "Update_Android_Project": "ionic capacitor copy android",
-    "Build_APK": "ionic capacitor build android"
+    "Build_APK": "ionic capacitor build android",
+    "Sync": "ionic cap sync",
+    "Generate Release Build": "npx cap copy && npx cap sync",
+    "Open Android Studio": "npx cap open android"
   },
   "eslintConfig": {
     "extends": [

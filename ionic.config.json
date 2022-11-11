@@ -3,5 +3,9 @@
   "integrations": {
     "capacitor": {}
   },
-  "type": "react"
+  "type": "react",
+  "appName": "Never Have I Ever",
+  "appId": "com.reterics.never",
+  "id": "com.reterics.never",
+  "applicationId": "com.reterics.never"
 }

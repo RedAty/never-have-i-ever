@@ -10,7 +10,7 @@ ion-content {
 
 .card-container {
     width: 100%;
-    height: 900px;
+    height: calc(100vh - 44px);
     padding: 0 10%;
 }
 .card-container .card-stack {
@@ -37,6 +37,9 @@ ion-content {
     padding-top: 20px;
     text-align: center;
     background-size: cover;
+}
+.card-container .card-stack .card-list li:not(:last-child) div:last-child {
+    display: none;
 }
 .card-container .card-stack .card-list li:nth-child(1) {
     top: 24px;
